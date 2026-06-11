@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ApiClient } from './api';
-import type { TurnResponse } from './api';
+import type { AssistantApi, TurnResponse } from './api';
 import { Recorder } from './audio/recorder';
 import { playStreamingWav } from './audio/streamPlayback';
 import type { PlaybackHandle } from './audio/streamPlayback';
@@ -31,7 +31,16 @@ function getAudioContextCtor(): typeof AudioContext | undefined {
   return w.AudioContext ?? w.webkitAudioContext;
 }
 
-export default function App() {
+export interface AppProps {
+  /** Replace the server client (the public interface demo injects a
+   *  simulated assistant). Default: ApiClient from the saved settings. */
+  client?: AssistantApi;
+  /** Demo presentation: banner, no mic/hands-free/settings (they need a
+   *  real server), demo-appropriate hints. */
+  demo?: boolean;
+}
+
+export default function App({ client, demo = false }: AppProps = {}) {
   const [settings, setSettings] = useState<Settings>(loadSettings);
   const [turns, setTurns] = useState<ConversationTurn[]>([]);
   const [status, setStatus] = useState<AppStatus>('idle');
@@ -41,9 +50,9 @@ export default function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [recordingSince, setRecordingSince] = useState<number | null>(null);
 
-  const api = useMemo(
-    () => new ApiClient({ baseUrl: settings.baseUrl, token: settings.token }),
-    [settings.baseUrl, settings.token]
+  const api = useMemo<AssistantApi>(
+    () => client ?? new ApiClient({ baseUrl: settings.baseUrl, token: settings.token }),
+    [client, settings.baseUrl, settings.token]
   );
   const apiRef = useRef(api);
   apiRef.current = api;
@@ -154,11 +163,14 @@ export default function App() {
         ]);
         if (settingsRef.current.playAloud && res.audio_url) {
           setStatus('speaking');
-          const ctx = getAudioContext();
-          const handle = playStreamingWav(apiRef.current.resolveUrl(res.audio_url), {
-            headers: apiRef.current.authHeaders(),
-            audioContext: ctx ?? undefined,
-          });
+          // A client that speaks for itself (the demo) replaces the WAV stream.
+          const speak = apiRef.current.speak?.bind(apiRef.current);
+          const handle = speak
+            ? speak(res.reply_text)
+            : playStreamingWav(apiRef.current.resolveUrl(res.audio_url), {
+                headers: apiRef.current.authHeaders(),
+                audioContext: getAudioContext() ?? undefined,
+              });
           playbackRef.current = handle;
           // Barge-in: keep listening during our own playback, in strict mode
           // so the speaker output can't trigger the VAD itself.
@@ -364,22 +376,33 @@ export default function App() {
       <header className="app-header">
         <h1>
           Inhouse<span className="header-accent">.</span>
+          {demo && <span className="demo-chip">interface demo</span>}
         </h1>
-        <div className="header-controls">
-          <label className="handsfree-toggle">
-            <input type="checkbox" checked={handsFree} onChange={(e) => setHandsFree(e.target.checked)} />
-            <span>Hands-free</span>
-          </label>
-          <button
-            type="button"
-            className="btn-subtle"
-            aria-expanded={settingsOpen}
-            onClick={() => setSettingsOpen((o) => !o)}
-          >
-            Settings
-          </button>
-        </div>
+        {!demo && (
+          <div className="header-controls">
+            <label className="handsfree-toggle">
+              <input type="checkbox" checked={handsFree} onChange={(e) => setHandsFree(e.target.checked)} />
+              <span>Hands-free</span>
+            </label>
+            <button
+              type="button"
+              className="btn-subtle"
+              aria-expanded={settingsOpen}
+              onClick={() => setSettingsOpen((o) => !o)}
+            >
+              Settings
+            </button>
+          </div>
+        )}
       </header>
+
+      {demo && (
+        <div className="demo-banner">
+          This is the real Inhouse app with a <strong>simulated</strong> assistant — everything runs
+          in this page, nothing is sent anywhere. The product runs on your hardware with your models.{' '}
+          <a href="https://github.com/getinhouse/inhouse">Get Inhouse →</a>
+        </div>
+      )}
 
       <SettingsPanel
         open={settingsOpen}
@@ -389,12 +412,22 @@ export default function App() {
       />
       <ErrorBanner message={error} onDismiss={() => setError(null)} />
 
-      <ConversationView turns={turns} status={status} />
+      <ConversationView
+        turns={turns}
+        status={status}
+        emptyHint={demo ? 'Type something — ask it what it is. It talks back, out loud.' : undefined}
+      />
 
       <footer className="app-footer">
         <StatusStrip status={status} healthy={healthy} onStopPlayback={stopPlayback} />
         <Composer disabled={status === 'thinking'} onSend={sendText} />
-        {!handsFree && (
+        {demo && (
+          <div className="demo-mic-hint">
+            Voice <em>input</em> needs your own server (whisper runs on your hardware, not in this
+            page) — so here, you type. Replies still speak.
+          </div>
+        )}
+        {!demo && !handsFree && (
           <MicButton
             disabled={status === 'thinking' || status === 'speaking'}
             recording={status === 'recording'}

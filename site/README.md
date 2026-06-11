@@ -22,3 +22,12 @@ rule) — one site, two doors, never separately hosted content on the `.ai`.
 Regenerate the README/app screenshots separately — this page intentionally
 ships none; the orb and the conversation are CSS/HTML so the page weighs
 almost nothing and loads instantly.
+
+## The interface demo (`demo/`)
+
+`demo/` is the public interface demo served at `getinhouse.org/demo/`: the
+real PWA built with a simulated, in-page assistant (`web/src/demo/`). It is
+**committed build output** so Pages still needs no build command — after
+changing the web app or the demo brain, regenerate it with `make demo` from
+the repo root and commit the result. The demo makes no network requests and
+registers no service worker; the no-trackers footer claim covers it too.

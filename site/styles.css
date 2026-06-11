@@ -283,3 +283,14 @@ footer strong { color: var(--accent); }
   .reveal, .reveal-line { opacity: 1; transform: none; }
   html { scroll-behavior: auto; }
 }
+
+/* Demo link in the meet section */
+.meet-try { margin-top: 1.4rem; transition-delay: .8s; }
+.meet-try a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: clamp(.95rem, 1.6vw, 1.1rem);
+  border-bottom: 1px solid var(--accent-dim);
+  padding-bottom: 2px;
+}
+.meet-try a:hover { border-bottom-color: var(--accent); }

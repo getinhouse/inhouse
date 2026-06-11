@@ -1,6 +1,6 @@
 PY := server/.venv/bin/python
 
-.PHONY: setup test lint e2e dev build voice
+.PHONY: setup test lint e2e dev build voice demo
 
 setup:
 	cd server && python3 -m venv .venv && .venv/bin/pip install -e ".[local,dev]"
@@ -27,3 +27,8 @@ dev:
 
 build:
 	cd web && npm run build
+
+# Rebuild the public interface demo (committed static output in site/demo,
+# served by Cloudflare Pages at getinhouse.org/demo).
+demo:
+	cd web && npm run build:demo

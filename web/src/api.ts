@@ -42,11 +42,26 @@ export interface ApiClientOptions {
   token?: string;
 }
 
+/**
+ * The client surface the app consumes. ApiClient (the real server) and the
+ * public demo's simulated client both implement it; a client that provides
+ * `speak` renders replies itself instead of streaming WAV from the server.
+ */
+export interface AssistantApi {
+  resolveUrl(path: string): string;
+  authHeaders(): Record<string, string>;
+  createSession(): Promise<SessionResponse>;
+  sendAudioTurn(sessionId: string, audio: Blob, filename: string): Promise<TurnResponse>;
+  sendTextTurn(sessionId: string, text: string): Promise<TurnResponse>;
+  health(): Promise<HealthResponse>;
+  speak?(text: string): { done: Promise<void>; stop: () => void };
+}
+
 interface ErrorEnvelope {
   error?: { code?: unknown; message?: unknown };
 }
 
-export class ApiClient {
+export class ApiClient implements AssistantApi {
   private readonly baseUrl: string;
   private readonly token: string;
 

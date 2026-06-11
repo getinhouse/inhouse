@@ -4,13 +4,15 @@ import type { AppStatus, ConversationTurn } from '../types';
 interface Props {
   turns: ConversationTurn[];
   status: AppStatus;
+  /** Override the empty-state hint (the demo doesn't have a mic to hold). */
+  emptyHint?: string;
 }
 
 function formatSeconds(ms: number): string {
   return `${(ms / 1000).toFixed(1)}s`;
 }
 
-export function ConversationView({ turns, status }: Props) {
+export function ConversationView({ turns, status, emptyHint }: Props) {
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -21,7 +23,7 @@ export function ConversationView({ turns, status }: Props) {
     <main className="conversation" aria-live="polite">
       {turns.length === 0 && status !== 'thinking' && (
         <div className="conversation-empty">
-          <p>Hold the mic and talk, flip on hands-free, or type below.</p>
+          <p>{emptyHint ?? 'Hold the mic and talk, flip on hands-free, or type below.'}</p>
         </div>
       )}
       {turns.map((turn) => (
