@@ -2,8 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-60%20passing-2ea44f)](#)
-<!-- POLAR_CHECKOUT_LINK: replace href with live checkout URL after product activation -->
-[![Buy Inhouse Pro](https://img.shields.io/badge/Inhouse%20Pro-%2459%20one--time-blue?logo=polar)](https://polar.sh/getinhouse)
+[![Buy Inhouse Pro](https://img.shields.io/badge/Inhouse%20Pro-%2459%20one--time-blue?logo=polar)](https://buy.polar.sh/polar_cl_6jjSshnPGiKpVBok0fIPy6MCf7P5cSiRMLzhi2N6n8K)
 
 **The in-house voice assistant. Your hardware, your models, your conversations.**
 

@@ -48,8 +48,7 @@ hands-free mode).
 
 ## How to buy
 
-<!-- POLAR_CHECKOUT_LINK: replace with live checkout URL after product activation -->
-**[Buy Inhouse Pro on Polar →](https://polar.sh/getinhouse)**
+**[Buy Inhouse Pro on Polar →](https://buy.polar.sh/polar_cl_6jjSshnPGiKpVBok0fIPy6MCf7P5cSiRMLzhi2N6n8K)**
 
 Checkout is handled by [Polar](https://polar.sh) as merchant of record (they
 deal with VAT/sales tax and invoices). Access to the private Pro repository
