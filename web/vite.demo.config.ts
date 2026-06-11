@@ -6,7 +6,7 @@
  *
  *   npm run build:demo      (or `make demo` from the repo root)
  */
-import { copyFileSync, renameSync } from 'node:fs';
+import { copyFileSync, mkdirSync, readdirSync, renameSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -23,6 +23,13 @@ export default defineConfig({
         // index.html; Rollup names it after the source (demo.html).
         renameSync(resolve(outDir, 'demo.html'), resolve(outDir, 'index.html'));
         copyFileSync(resolve(__dirname, 'public/icon.svg'), resolve(outDir, 'icon.svg'));
+        // Pre-baked Piper reply audio (scripts/gen_demo_voice.py).
+        const voiceSrc = resolve(__dirname, 'demo-voice');
+        const voiceOut = resolve(outDir, 'voice');
+        mkdirSync(voiceOut, { recursive: true });
+        for (const f of readdirSync(voiceSrc).filter((f) => f.endsWith('.mp3'))) {
+          copyFileSync(resolve(voiceSrc, f), resolve(voiceOut, f));
+        }
       },
     },
   ],

@@ -1,10 +1,14 @@
 PY := server/.venv/bin/python
 
-.PHONY: setup test lint e2e dev build voice demo
+.PHONY: setup hello test lint e2e dev build voice demo
 
+# First-run setup and first conversation — thin wrappers around the
+# canonical cross-platform scripts (Windows: scripts/setup.ps1 + hello.ps1).
 setup:
-	cd server && python3 -m venv .venv && .venv/bin/pip install -e ".[local,dev]"
-	cd web && npm install
+	scripts/setup.sh
+
+hello:
+	scripts/hello.sh
 
 voice:
 	mkdir -p voices
@@ -32,3 +36,8 @@ build:
 # served by Cloudflare Pages at getinhouse.org/demo).
 demo:
 	cd web && npm run build:demo
+
+# Re-render the demo's spoken replies with the real Piper voice after
+# editing web/src/demo/voice-lines.json (then run `make demo`).
+demo-voice:
+	$(PY) scripts/gen_demo_voice.py

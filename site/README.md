@@ -29,5 +29,10 @@ almost nothing and loads instantly.
 real PWA built with a simulated, in-page assistant (`web/src/demo/`). It is
 **committed build output** so Pages still needs no build command — after
 changing the web app or the demo brain, regenerate it with `make demo` from
-the repo root and commit the result. The demo makes no network requests and
-registers no service worker; the no-trackers footer claim covers it too.
+the repo root and commit the result. Replies are spoken with the product's
+real Piper voice: one pre-baked MP3 per scripted line, generated from
+`web/src/demo/voice-lines.json` by `make demo-voice` (rerun it whenever the
+catalog changes; a test fails if the MP3s drift out of sync). The demo
+sends nothing anywhere — its only traffic is fetching this site's own
+static files — and registers no service worker; the no-trackers footer
+claim covers it too.

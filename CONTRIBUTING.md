@@ -6,14 +6,14 @@ over large ambitious ones.
 ## Getting set up
 
 ```bash
-make setup    # python venv + npm install
-make voice    # download a piper voice for local runs
-make test     # 33 backend + 27 frontend tests
-make lint     # ruff + tsc --noEmit
+scripts/setup.sh   # venv + deps + voice + PWA build (Windows: scripts\setup.ps1)
+make test          # backend + frontend tests
+make lint          # ruff + tsc --noEmit
 ```
 
-`python scripts/mock_llm.py` gives you a zero-key LLM for development, and
-`scripts/e2e_check.sh` runs the whole pipeline with real STT/TTS.
+`scripts/hello.sh` (Windows: `scripts\hello.ps1`) runs the server against the
+bundled zero-key mock LLM, and `scripts/e2e_check.sh` runs the whole pipeline
+with real STT/TTS.
 
 ## What makes a PR easy to merge
 

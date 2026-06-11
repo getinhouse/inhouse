@@ -1,7 +1,7 @@
 # Inhouse
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-60%20passing-2ea44f)](#)
+[![Tests](https://img.shields.io/badge/tests-74%20passing-2ea44f)](#)
 [![Buy Inhouse Pro](https://img.shields.io/badge/Inhouse%20Pro-%2459%20one--time-blue?logo=polar)](https://buy.polar.sh/polar_cl_6jjSshnPGiKpVBok0fIPy6MCf7P5cSiRMLzhi2N6n8K)
 
 **The in-house voice assistant. Your hardware, your models, your conversations.**
@@ -66,7 +66,7 @@ that's the point of it.)
 - **Production posture.** Bearer-token auth, loopback-by-default binding,
   systemd unit with sandboxing, Docker Compose with Ollama, retention sweeps
   for recordings, session persistence across restarts, and a hardening guide.
-- **Tested.** 33 backend tests, 27 frontend tests, and an end-to-end script
+- **Tested.** 35 backend tests, 39 frontend tests, and an end-to-end script
   that speaks a question into the pipeline with real STT/TTS and validates the
   audio that comes back.
 
@@ -75,40 +75,78 @@ that's the point of it.)
 **Step 0 — no install:** [the interface demo](https://getinhouse.org/demo/)
 shows you what you're building toward in thirty seconds.
 
-**Hear the real pipeline in ~5 minutes — no LLM, no API keys.** The bundled
-mock model means your first conversation needs nothing configured: your mic →
-local Whisper → mock LLM → local Piper → your speakers.
+**Hear the real pipeline in minutes — no LLM, no API keys.** Two scripts do
+everything: `setup` checks prerequisites, creates the Python environment,
+installs dependencies, builds the web app, downloads the Piper voice
+(~60 MB), and writes a default `server/.env`. `hello` then starts the server
+wired to a bundled offline mock model, so your first conversation needs
+nothing configured: your mic → local Whisper → mock LLM → local Piper →
+your speakers. Both are safe to re-run.
 
-```bash
-git clone https://github.com/getinhouse/inhouse && cd inhouse
-make setup          # python venv + npm install
-make voice          # download a Piper voice (~60 MB)
-make build          # build the PWA (served by the python server)
-cp .env.example server/.env   # voice path + sane defaults
+**You need:** [Git](https://git-scm.com), [Python 3.11+](https://python.org/downloads)
+(on Windows, tick *"Add python.exe to PATH"* in the installer), and
+[Node.js 18+](https://nodejs.org). Nothing needs admin rights.
 
-server/.venv/bin/python scripts/mock_llm.py &          # offline stand-in LLM
-cd server && INHOUSE_LLM__BASE_URL=http://127.0.0.1:9001/v1 \
-  INHOUSE_LLM__MODEL=mock .venv/bin/python -m inhouse
-# → http://127.0.0.1:8770 — open it, hold the mic, say hello.
-#   (mic works on localhost; use TLS for phones — one line, below)
+### Windows (PowerShell)
+
+```powershell
+git clone https://github.com/getinhouse/inhouse
+cd inhouse
+Set-ExecutionPolicy -Scope Process Bypass -Force   # this window only
+.\scripts\setup.ps1
+.\scripts\hello.ps1
 ```
 
-**Then give it a real brain.** Any OpenAI-compatible endpoint or Anthropic;
-fastest local path is Ollama — `server/.env` already targets it on `:11434`:
+### macOS / Linux
 
 ```bash
-#   ollama pull llama3.2
+git clone https://github.com/getinhouse/inhouse
+cd inhouse
+scripts/setup.sh
+scripts/hello.sh
+```
+
+Then open **http://127.0.0.1:8770**, hold the mic (or type), and say hello.
+Your first question downloads the whisper model (~75 MB), so the first reply
+is slow once. Ctrl+C in the script window stops everything.
+
+(`make setup` / `make hello` exist as thin wrappers for Unix developers;
+the scripts are the canonical path.)
+
+### Then give it a real brain
+
+Any OpenAI-compatible endpoint or Anthropic. The fastest local path is
+[Ollama](https://ollama.com) — the default `server/.env` already points at
+it, so once `ollama pull llama3.2` has run, start the server without the
+mock:
+
+```powershell
+# Windows
+cd server
+.venv\Scripts\python.exe -m inhouse
+```
+
+```bash
+# macOS / Linux
 cd server && .venv/bin/python -m inhouse
 ```
 
-### Phone access in one line
+Other providers (OpenAI, Groq, Anthropic, hosted whisper/TTS) are one or two
+lines in `server/.env` — see [docs/providers.md](docs/providers.md).
+
+### Then put it on your phone
+
+After it works on the desktop: the mic requires HTTPS off-localhost, and the
+easiest valid certificate is [Tailscale](https://tailscale.com) (free, no
+ports opened):
 
 ```bash
 tailscale serve --bg --https=8443 http://127.0.0.1:8770
 ```
 
-Open `https://<machine>.<tailnet>.ts.net:8443`, add to home screen, talk.
-See [deploy/HARDENING.md](deploy/HARDENING.md) before any other topology.
+Open `https://<machine>.<tailnet>.ts.net:8443` on your phone, add to home
+screen, talk. See [deploy/HARDENING.md](deploy/HARDENING.md) before any
+other topology.
 
 ## Configuration
 
@@ -126,8 +164,8 @@ silence before it costs you an STT pass, and the whisper-hallucination guard.
 ## Project layout
 
 ```
-server/   FastAPI app, adapters, pipeline, 33 tests
-web/      React PWA (Vite + TS strict), VAD + barge-in + streaming playback, 27 tests
+server/   FastAPI app, adapters, pipeline, 35 tests
+web/      React PWA (Vite + TS strict), VAD + barge-in + streaming playback, 39 tests
 deploy/   systemd unit, Dockerfile, docker-compose (with Ollama), hardening
 scripts/  mock LLM, end-to-end smoke test
 docs/     architecture & provider cookbook
