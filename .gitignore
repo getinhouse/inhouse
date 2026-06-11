@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+.runtime/
+node_modules/
+web/dist/
+.env
+voices/*.onnx
+voices/*.onnx.json
+.pytest_cache/
+*.egg-info/

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Inhouse — the assistant that works for you</title>
+<meta name="description" content="A voice assistant that lives in your home, runs on your hardware, and answers to no one but you. Open source.">
+<meta property="og:title" content="Inhouse — meet the assistant that works for you">
+<meta property="og:description" content="A voice, a memory, and a mind of your choosing — running entirely on hardware you own.">
+<meta name="theme-color" content="#07090b">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="top">
+  <span class="wordmark">Inhouse<span class="accent">.</span></span>
+  <nav>
+    <a href="#how">How</a>
+    <a href="https://github.com/getinhouse/inhouse" class="ghost-btn">GitHub</a>
+  </nav>
+</header>
+
+<!-- 1 · THE WRONG WORLD -->
+<section class="hero">
+  <div class="orb-wrap" aria-hidden="true"><div class="orb"></div><div class="orb-glow"></div></div>
+  <h1 class="hero-line">
+    <span class="reveal-line">Every assistant you've ever talked to</span>
+    <span class="reveal-line">worked for <em>someone else.</em></span>
+  </h1>
+  <p class="hero-turn reveal">This one works for you.</p>
+  <div class="scroll-cue reveal" aria-hidden="true"><span></span>meet it</div>
+</section>
+
+<!-- 2 · MEET IT -->
+<section class="meet">
+  <div class="presence" aria-hidden="true"><div class="presence-core"></div></div>
+  <p class="greeting"><span class="type-target" data-text="Good evening. Ask me anything — no one else is listening."></span><span class="caret" aria-hidden="true"></span></p>
+  <p class="meet-sub reveal">It isn't a website. It isn't an account.<br>It's a presence in your home that knows your voice.</p>
+</section>
+
+<!-- 3 · A CONVERSATION -->
+<section class="convo">
+  <div class="phone reveal">
+    <div class="bubble you">Give me one good reason to get up early tomorrow.</div>
+    <div class="bubble it">Sunrise is at 5:52. You wanted to start running before work — the streets will be empty, and you'll be done before your first meeting.</div>
+    <div class="speaking-chip"><i></i><i></i><i></i> speaking</div>
+  </div>
+  <div class="convo-copy">
+    <p class="kicker reveal">You said it out loud.</p>
+    <p class="kicker reveal">It answered out loud —</p>
+    <p class="kicker strong reveal">and it started speaking<br>before it finished thinking.</p>
+    <p class="footnote reveal">Replies stream sentence-by-sentence. First words in moments, not after the whole thought.</p>
+  </div>
+</section>
+
+<!-- 4 · LIFE WITH IT -->
+<section class="life">
+  <p class="section-whisper reveal">what changes</p>
+  <div class="vignette reveal">
+    <span class="vtime">7:12 AM</span>
+    <p>Hands full, phone across the kitchen.<br><strong>You just talk.</strong></p>
+  </div>
+  <div class="vignette reveal">
+    <span class="vtime">11:58 PM</span>
+    <p>The thought that won't let you sleep.<br><strong>Say it. Let it go.</strong></p>
+  </div>
+  <div class="vignette reveal">
+    <span class="vtime">Sunday</span>
+    <p>Your kid asks it why the sky is blue.<br><strong>The question never leaves your house.</strong></p>
+  </div>
+</section>
+
+<!-- 5 · THE TWIST -->
+<section class="twist">
+  <p class="twist-intro reveal">Now — the part nobody believes.</p>
+  <h2 class="twist-line reveal">That whole conversation<br>happened <em>inside your house.</em></h2>
+  <ul class="owned reveal">
+    <li><span>The ears</span> yours</li>
+    <li><span>The voice</span> yours</li>
+    <li><span>The memory</span> yours</li>
+    <li><span>The hardware</span> a box you already own</li>
+  </ul>
+  <p class="twist-final reveal">The cloud was never invited.</p>
+</section>
+
+<!-- 6 · WHY THIS DIDN'T EXIST -->
+<section class="why">
+  <h2 class="reveal">They could have built this<br>years ago.</h2>
+  <p class="reveal">The microphones were cheap. The models were ready.<br>
+  But a private assistant can't be sold twice —<br>
+  <em>and you were the second sale.</em></p>
+  <p class="reveal">So the industry built smart speakers that answer to headquarters.<br>
+  <strong>Inhouse is the one with no headquarters.</strong></p>
+</section>
+
+<!-- 7 · THE REVEAL -->
+<section class="how" id="how">
+  <p class="section-whisper reveal">alright — here's how</p>
+  <div class="spec-grid">
+    <div class="spec reveal">
+      <h3>A body you own</h3>
+      <p>Any Linux box — a mini-PC, a home server, a small VPS. Two CPU cores are genuinely enough.</p>
+    </div>
+    <div class="spec reveal">
+      <h3>A mind you choose</h3>
+      <p>Run a local model with Ollama and unplug the internet — or point it at Claude, GPT, or any API. Swappable in one line.</p>
+    </div>
+    <div class="spec reveal">
+      <h3>Senses that stay home</h3>
+      <p>Whisper listens locally. Piper speaks locally. Your audio never becomes someone's training data.</p>
+    </div>
+    <div class="spec reveal">
+      <h3>A door only you have</h3>
+      <p>An installable app on your phone, reached through an encrypted tunnel only your devices can see. Interrupt it mid-sentence — it yields.</p>
+    </div>
+  </div>
+  <div class="terminal reveal" aria-label="install commands">
+    <div class="term-bar"><i></i><i></i><i></i></div>
+    <pre><code><span class="dim"># five minutes from now, it says hello</span>
+git clone https://github.com/getinhouse/inhouse
+cd inhouse && make setup && make voice
+.venv/bin/python -m inhouse</code></pre>
+  </div>
+  <p class="open-line reveal">MIT licensed · 60 tests · no telemetry, no account, no asterisk</p>
+</section>
+
+<!-- 8 · TAKE IT HOME -->
+<section class="cta">
+  <h2 class="reveal">Take it home.</h2>
+  <div class="cta-row reveal">
+    <a class="btn primary" href="https://github.com/getinhouse/inhouse">Get the code — free, forever</a>
+    <a class="btn quiet" href="https://github.com/getinhouse/inhouse/blob/master/PRO.md">Inhouse Pro · $59 — own the playbook</a>
+  </div>
+  <p class="cta-sub reveal">The core is complete and stays open. Pro is the production playbook —<br>for the day it stops being a project and starts being part of the house.</p>
+</section>
+
+<footer>
+  <p>This page loaded <strong>zero</strong> trackers, <strong>zero</strong> analytics, and <strong>zero</strong> third-party fonts.<br>That's not a feature. That's the whole idea.</p>
+  <p class="foot-links"><a href="https://github.com/getinhouse/inhouse">GitHub</a> · <a href="https://github.com/getinhouse/inhouse/blob/master/docs/architecture.md">Architecture</a> · <a href="https://github.com/getinhouse/inhouse/blob/master/SECURITY.md">Security</a> · MIT</p>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "inhouse-server"
+version = "0.1.0"
+description = "Self-hosted voice assistant server: pluggable STT, LLM, and TTS with streaming turn audio"
+readme = "README.md"
+authors = [{ name = "Inhouse", email = "hello@getinhouse.org" }]
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "fastapi>=0.111",
+    "uvicorn[standard]>=0.30",
+    "httpx>=0.27",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    "python-multipart>=0.0.9",
+    "numpy>=1.26",
+]
+
+[project.optional-dependencies]
+local = [
+    "faster-whisper>=1.0",
+    "av>=12.0",
+    "piper-tts>=1.2",
+]
+anthropic = [
+    "anthropic>=0.40",
+]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.4",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/inhouse"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

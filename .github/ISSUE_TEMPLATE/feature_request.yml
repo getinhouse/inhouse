@@ -1,0 +1,36 @@
+name: Feature request
+description: Propose an addition or change
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Adapters (new STT/LLM/TTS providers) are the most welcome contribution and
+        usually don't need a request — see CONTRIBUTING.md and open a PR.
+        Note the non-goals in CONTRIBUTING.md before proposing wake words or background listening.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve for you?
+      description: The use case, not the implementation. "When I X, I can't Y."
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [server / pipeline, adapters / providers, web client, deployment / docs, other]
+    validations:
+      required: true
+  - type: checkboxes
+    id: pr
+    attributes:
+      label: Contribution
+      options:
+        - label: I'd be willing to implement this with maintainer guidance

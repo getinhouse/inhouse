@@ -1,0 +1,34 @@
+# Self-hosted voice assistant, fully local: Inhouse + Ollama.
+# 1. docker compose up -d
+# 2. docker compose exec ollama ollama pull llama3.2
+# 3. open http://127.0.0.1:8770
+# The published port binds to loopback only — put TLS in front (Caddy,
+# Traefik, or `tailscale serve`) before using a phone microphone; browsers
+# require a secure context for getUserMedia. See deploy/HARDENING.md.
+services:
+  inhouse:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile
+    ports:
+      - "127.0.0.1:8770:8770"
+    environment:
+      INHOUSE_LLM__BASE_URL: http://ollama:11434/v1
+      INHOUSE_LLM__MODEL: llama3.2
+      INHOUSE_API_TOKEN: ${INHOUSE_API_TOKEN:-}
+    volumes:
+      - ../../voices:/app/voices:ro
+      - inhouse-runtime:/app/server/.runtime
+    depends_on:
+      - ollama
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:latest
+    volumes:
+      - ollama-models:/root/.ollama
+    restart: unless-stopped
+
+volumes:
+  inhouse-runtime:
+  ollama-models:

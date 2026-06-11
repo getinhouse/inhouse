@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Question / help with your deployment
+    url: https://github.com/getinhouse/inhouse/discussions
+    about: Setup questions and "is this possible?" belong in Discussions.
+  - name: Security vulnerability
+    url: https://github.com/getinhouse/inhouse/security/policy
+    about: Never report vulnerabilities in public issues.

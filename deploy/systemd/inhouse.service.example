@@ -1,0 +1,23 @@
+# Inhouse server — copy to /etc/systemd/system/inhouse.service and adjust paths.
+# sudo systemctl daemon-reload && sudo systemctl enable --now inhouse
+[Unit]
+Description=Inhouse voice assistant server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/inhouse/server
+EnvironmentFile=/opt/inhouse/server/.env
+ExecStart=/opt/inhouse/server/.venv/bin/python -m inhouse
+Restart=on-failure
+RestartSec=2
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=read-only
+ReadWritePaths=/opt/inhouse/server/.runtime
+
+[Install]
+WantedBy=multi-user.target

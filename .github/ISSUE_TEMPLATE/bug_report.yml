@@ -1,0 +1,43 @@
+name: Bug report
+description: Something doesn't work the way the docs say it should
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before filing: check [troubleshooting in HARDENING.md](../../blob/master/deploy/HARDENING.md)
+        and run `scripts/e2e_check.sh` — it isolates whether the pipeline or your config is at fault.
+        **Security issues: do NOT file an issue — see [SECURITY.md](../../blob/master/SECURITY.md).**
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+      placeholder: Pressed the mic button on my phone, got "No speech detected" although I spoke for 3 seconds...
+    validations:
+      required: true
+  - type: textarea
+    id: setup
+    attributes:
+      label: Deployment
+      description: How is Inhouse running? Strip any tokens/keys.
+      placeholder: |
+        - install: systemd / docker compose / make dev
+        - access: localhost / tailscale serve / reverse proxy (which?)
+        - providers: stt=faster_whisper(base), llm=ollama llama3.2, tts=piper lessac-medium
+        - host: 2 vCPU VPS, Ubuntu 24.04 / browser: iOS Safari 19
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: "`journalctl -u inhouse -n 50` or server console output around the failure. Check for secrets before pasting."
+      render: text
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Sanity checks
+      options:
+        - label: "`/api/health` returns ok from the affected client"
+        - label: "I'm on HTTPS or localhost (microphone requires a secure context)"
+        - label: "`make test` passes on my checkout (if running from source)"
